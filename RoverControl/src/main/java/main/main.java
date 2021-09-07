@@ -20,7 +20,11 @@ public class main {
         server.start();
     }
 
-    public static void startTimer(){
+    public static void startTimer(){ //This function manages the keepalive packet system between the library and the rover.  It sends a packet containing the data
+        //"keepalive" to the library and if it responds within a second with "keepalive" then the connection is sustained...otherwise the rover removes the connected 
+        //library from the ConnectedUsers list
+        
+        
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -55,7 +59,8 @@ public class main {
         }, 0, 2000);
     }
 
-    private static boolean keepAlive(InetAddress address) throws IOException, InterruptedException {
+    private static boolean keepAlive(InetAddress address) throws IOException, InterruptedException { //sends a packet and expects a return...the function above (startTimer)
+        //handles timeout issues (as this can be treated as blocking because the socket#recieve blocks this function thus blocking the keepalive stuff)
         byte[] bytes;
         bytes = "keepalive".getBytes(StandardCharsets.UTF_8);
         DatagramPacket packet = new DatagramPacket(bytes, bytes.length, address, 7777);
@@ -85,7 +90,7 @@ public class main {
 
 
 class responseServer extends Thread{
-
+    //This recieves packets that get sent to the APIManager class for parsing.  Its just a standerd UDP server - nothing special here
     public static DatagramSocket ds;
     public void run(){
 
@@ -116,6 +121,7 @@ class responseServer extends Thread{
         }
         //SERVER HERE
     }
+    //Just constructs a string from a byte[]
     private static StringBuilder getAsString(byte[] a){
         if (a == null)
             return null;
