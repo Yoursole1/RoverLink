@@ -38,14 +38,14 @@ public class Actions {
         }
 
         Movement.rotateWheel(a,wheelRotations);
-        double timeToMoveMillisec = Math.abs(10*x/speed);
+        double timeToMoveMillisec = Math.abs(10*x/speed); //Due to the amazingness of math, this formula is like this due to a lot of canceling :D
 
         //this DOES stop the whole program.  The rover can't receive packets during this time (issue needs to be fixed)
         Thread.sleep((long) timeToMoveMillisec+500);
 
 
         if(y>0){
-            rotateRover(90);
+            rotateRover(90); //rotate left or right for positive or negative y
         }else{
             rotateRover(-90);
         }
@@ -56,7 +56,7 @@ public class Actions {
 
 
         for (int i = 0; i < 4; i++) {
-            wheelRotations[i] = (360*y)/wheelCircumference;
+            wheelRotations[i] = (360*y)/wheelCircumference; //just add the movement distances to the control array
         }
 
         Movement.rotateWheel(a,wheelRotations);
@@ -73,7 +73,7 @@ public class Actions {
 
 
     }
-    public void moveRoverY(double x, double y){
+    public void moveRoverY(double x, double y){ //NEEDS TO BE IMPLEMENTED 
 
 
 
@@ -86,7 +86,11 @@ public class Actions {
     }
 
     final int rotationMultiplier = 1;
-    public void rotateRover(double angle){
+    
+    //This function scales using the angle and multiplying that by the rotationMultiplier.  I did it this way because I didnt want to figure out 
+    //how to calculate how many wheel turns are needed to make the rover turn on different surfaces so just change the rotationMultiplier until the rover
+    //turns the correct amount.  If it is underturning then make this number larger, and vice-versa
+    public void rotateRover(double angle){ 
         System.out.println("rotating: "+angle);
         double[] angles = new double[4];
         int[] a = {0, 1, 2, 3};
@@ -96,7 +100,7 @@ public class Actions {
             angles[i] = angles[i]*rotationMultiplier;
         }
 
-        angles[0] = (angle<0)?-angles[0]:angles[0];
+        angles[0] = (angle<0)?-angles[0]:angles[0]; //These make the wheels turn alternating to eachother 
         angles[1] = (angle<0)?-angles[1]:angles[1];
         angles[2] = (angle>0)?-angles[2]:angles[2];
         angles[3] = (angle>0)?-angles[3]:angles[3];
