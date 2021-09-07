@@ -18,19 +18,20 @@ public class APImanager {
     public static ArrayList<InetAddress> connectedUsers = new ArrayList<>();
 
 
-    private static Actions actions = new Actions(5,12.7,20.28);
+    private static Actions actions = new Actions(5,12.7,20.28); //dimentions of rover (listen in javadocs inside the Actions class)
 
 
+    //this just manages responding to various packets sent to the rover.  
     public static void respond(String query, InetAddress address) throws IOException, InterruptedException {
         String q = query;
-        if (q.equals("login") && !connectedUsers.contains(address)) {
+        if (q.equals("login") && !connectedUsers.contains(address)) { //This manages the login packet
             sendPacket("success", address);
             connectedUsers.add(address);
             System.out.println(address + " connected");
 
             Thread.sleep(500);
             startTimer();
-        }else if(connectedUsers.contains(address)){
+        }else if(connectedUsers.contains(address)){ //Everything past here is a control packet
             System.out.println(q);
             if(q.contains("MOVE")){
                 if(q.contains("MOVEX")){
@@ -56,7 +57,7 @@ public class APImanager {
 
                     actions.moveRoverY(x,y);
                 }
-            }else if(q.equals("RETURNPATH")){
+            }else if(q.equals("RETURNPATH")){ 
                 actions.returnHomePath();
             }else if(q.equals("RETURNVECTOR")){
                 actions.returnHomeVector();
