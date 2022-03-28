@@ -11,8 +11,8 @@ public class main {
     public static void main(String[] a) throws IOException {
 
         
-        
-        RoverLink link = new RoverLink(InetAddress.getByName("10.0.0.195"),"login");
+        //testing ip
+        RoverLink link = new RoverLink(InetAddress.getByName("15.0.1.69"),"login");
 
 
 
